@@ -27,7 +27,7 @@
 <script>window.jspdf||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>')</script>
 <script src="vendor/html2canvas.min.js"></script>
 <script>window.html2canvas||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>')</script>
-<link rel="stylesheet" href="css/app.css?v=a938410af8">
+<link rel="stylesheet" href="css/app.css?v=a6ce12b7cd">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
   <div class="login-art">
     <div class="art-bg"></div>
     <div class="login-brand-mark">
-    <img src="icons/logo.jpg?v=a938410af8" alt="Eden Electronics Chuka — We care for your home" style="height:150px;width:150px;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.35);display:block">
+    <img src="icons/logo.jpg?v=a6ce12b7cd" alt="Eden Electronics Chuka — We care for your home" style="height:150px;width:150px;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.35);display:block">
   </div>
     <div class="login-h">Smart POS for the <em>modern</em> home.</div>
     <div class="login-sub">Manage stock, process sales, track staff performance and grow your furniture, electronics and household goods business — all in one modern platform.</div>
@@ -131,7 +131,7 @@
 
   <!-- DASHBOARD PAGE -->
   <div id="dashboard" class="page-wrap page show">
-    <div id="backup-nudge" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;background:var(--gold-p);border:1.5px solid var(--gold-l);border-radius:12px;padding:12px 14px;margin-bottom:14px">
+    <div id="backup-nudge" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;background:var(--gold-p);border:1.5px solid var(--warn-bd);border-radius:12px;padding:12px 14px;margin-bottom:14px">
       <div style="flex:1;min-width:200px"><div id="bkn-title" style="font-size:13px;font-weight:800;color:var(--ink)">Back up your data</div><div id="bkn-sub" style="font-size:12px;color:var(--g600)"></div></div>
       <button class="btn btn-p" onclick="shareBackup()">Share backup</button>
       <button class="btn btn-s" onclick="snoozeBackupNudge()">Later</button>
@@ -139,15 +139,15 @@
     <div class="dash-top">
       <div><div class="dash-greet" id="greeting">Good morning, Manager 👋</div><div class="dash-date" id="dash-date"></div></div>
       <div class="dash-acts">
-        <button class="btn btn-s"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg><span>Export</span></button>
+        <button class="btn btn-s" aria-label="Export" title="Export"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg><span>Export</span></button>
         <button class="btn btn-p" onclick="go('pos',document.querySelector('[data-page=pos]'))"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg><span>New Sale</span></button>
       </div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--green),var(--leaf))"></div><div class="kpi-ico" style="background:var(--pale)"><svg viewBox="0 0 24 24" fill="var(--green)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="kpi-v" id="dash-kpi-revenue">KES 0</div><div class="kpi-l">Today Revenue</div><div class="kpi-d up" id="dash-kpi-revenue-sub">Sales recorded today</div></div>
-      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--gold),var(--gold-l))"></div><div class="kpi-ico" style="background:var(--gold-p)"><svg viewBox="0 0 24 24" fill="var(--gold)"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="kpi-v" id="dash-kpi-cust">0</div><div class="kpi-l">Sales Today</div><div class="kpi-d up" id="dash-kpi-cust-sub">Transactions</div></div>
-      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--danger),#e74c3c)"></div><div class="kpi-ico" style="background:#fdecea"><svg viewBox="0 0 24 24" fill="var(--danger)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="kpi-v" id="dash-kpi-tot">KES 0.00</div><div class="kpi-l">Monthly TOT (1.5%)</div><div class="kpi-d dn" id="dash-kpi-tot-sub">Est. tax payable</div></div>
-      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--info),#4f8df7)"></div><div class="kpi-ico" style="background:#e8f0fe"><svg viewBox="0 0 24 24" fill="var(--info)"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/></svg></div><div class="kpi-v" id="dash-kpi-monthly">KES 0</div><div class="kpi-l">Month Revenue</div><div class="kpi-d up">This month so far</div></div>
+      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--green),var(--leaf))"></div><div class="kpi-ico" style="background:var(--pale)"><svg viewBox="0 0 24 24" fill="var(--text-brand)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="kpi-v" id="dash-kpi-revenue">KES 0</div><div class="kpi-l">Today Revenue</div><div class="kpi-d up" id="dash-kpi-revenue-sub">Sales recorded today</div></div>
+      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--gold),var(--gold-l))"></div><div class="kpi-ico" style="background:var(--gold-p)"><svg viewBox="0 0 24 24" fill="var(--text-gold)"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="kpi-v" id="dash-kpi-cust">0</div><div class="kpi-l">Sales Today</div><div class="kpi-d up" id="dash-kpi-cust-sub">Transactions</div></div>
+      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--danger),#e74c3c)"></div><div class="kpi-ico" style="background:var(--bad-bg)"><svg viewBox="0 0 24 24" fill="var(--danger-text)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="kpi-v" id="dash-kpi-tot">KES 0.00</div><div class="kpi-l">Monthly TOT (1.5%)</div><div class="kpi-d dn" id="dash-kpi-tot-sub">Est. tax payable</div></div>
+      <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--info),#4f8df7)"></div><div class="kpi-ico" style="background:var(--info-bg)"><svg viewBox="0 0 24 24" fill="var(--info-text)"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/></svg></div><div class="kpi-v" id="dash-kpi-monthly">KES 0</div><div class="kpi-l">Month Revenue</div><div class="kpi-d up">This month so far</div></div>
     </div>
     <div class="kpi-grid kpi3 dash-profit" style="margin-bottom:18px" onclick="go('profit',document.querySelector('[data-page=profit]'))" title="Open the profit report">
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--leaf),var(--sage))"></div><div class="kpi-v" id="dash-pf-today">KES 0</div><div class="kpi-l">Gross profit today</div><div class="kpi-d" id="dash-pf-today-s"></div></div>
@@ -182,7 +182,7 @@
       <div class="pos-sb">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input id="pos-search" placeholder="Search products or scan barcode…" oninput="filterProds()" onkeydown="posSearchKey(event)">
-        <svg id="scan-cam-btn" onclick="openScanner()" title="Scan with camera" viewBox="0 0 24 24" fill="currentColor" style="color:var(--green);cursor:pointer"><path d="M1 5h2v14H1zm4 0h1v14H5zm2 0h3v14H7zm4 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h2v14h-2z"/></svg>
+        <svg id="scan-cam-btn" onclick="openScanner()" title="Scan with camera" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text-brand);cursor:pointer"><path d="M1 5h2v14H1zm4 0h1v14H5zm2 0h3v14H7zm4 0h1v14h-1zm3 0h2v14h-2zm3 0h1v14h-1zm2 0h2v14h-2z"/></svg>
       </div>
       <div class="pos-cats" id="pos-cats"><div class="cpill on" onclick="setCat('All',this)">All</div></div>
       <div class="pgrid" id="pgrid"></div>
@@ -288,14 +288,14 @@
     </div>
     <div class="rep-grid">
       <div class="card"><div class="card-h"><div class="card-title">Profit by Category</div></div><div class="card-b" style="padding-top:0"><div class="txn-tw"><table style="min-width:360px"><thead><tr><th>Category</th><th>Revenue</th><th>Profit</th><th>Margin</th></tr></thead><tbody id="pf-cat"></tbody></table></div></div></div>
-      <div class="card"><div class="card-h"><div class="card-title">Expenses by Category</div><div class="card-sub"><a href="#" onclick="go('expenses',document.querySelector('[data-page=expenses]'));return false" style="color:var(--green);font-weight:700">Add / manage expenses →</a></div></div><div class="card-b" style="padding-top:0"><div class="txn-tw"><table style="min-width:300px"><thead><tr><th>Category</th><th>Amount</th></tr></thead><tbody id="pf-exp"></tbody></table></div></div></div>
+      <div class="card"><div class="card-h"><div class="card-title">Expenses by Category</div><div class="card-sub"><a href="#" onclick="go('expenses',document.querySelector('[data-page=expenses]'));return false" style="color:var(--text-brand);font-weight:700">Add / manage expenses →</a></div></div><div class="card-b" style="padding-top:0"><div class="txn-tw"><table style="min-width:300px"><thead><tr><th>Category</th><th>Amount</th></tr></thead><tbody id="pf-exp"></tbody></table></div></div></div>
     </div>
   </div>
 
   <!-- CUSTOMERS -->
-  <div id="customers" class="page-wrap page"><div class="spage"><div class="sp-ico">👥</div><h2>Customer Management</h2><p>Track loyal customers, purchase history, and manage relationships for Eden Electronics Chuka.</p><div class="sp-stats"><div class="spstat"><div class="spstv" style="color:var(--green)">0</div><div class="spstl">Total</div></div><div class="spstat"><div class="spstv" style="color:var(--gold)">0</div><div class="spstl">Active Today</div></div><div class="spstat"><div class="spstv" style="color:var(--info)">0</div><div class="spstl">Loyalty</div></div></div><button class="btn btn-p" style="margin-top:8px">Add Customer</button></div></div>
+  <div id="customers" class="page-wrap page"><div class="spage"><div class="sp-ico">👥</div><h2>Customer Management</h2><p>Track loyal customers, purchase history, and manage relationships for Eden Electronics Chuka.</p><div class="sp-stats"><div class="spstat"><div class="spstv" style="color:var(--text-brand)">0</div><div class="spstl">Total</div></div><div class="spstat"><div class="spstv" style="color:var(--text-gold)">0</div><div class="spstl">Active Today</div></div><div class="spstat"><div class="spstv" style="color:var(--info-text)">0</div><div class="spstl">Loyalty</div></div></div><button class="btn btn-p" style="margin-top:8px">Add Customer</button></div></div>
   <!-- SUPPLIERS -->
-  <div id="suppliers" class="page-wrap page"><div class="spage"><div class="sp-ico">🚛</div><h2>Supplier Management</h2><p>Manage supplier relationships, track purchase orders and delivery schedules for your furniture, electronics and household stock.</p><div class="sp-stats"><div class="spstat"><div class="spstv" style="color:var(--green)">0</div><div class="spstl">Suppliers</div></div><div class="spstat"><div class="spstv" style="color:var(--warn)">0</div><div class="spstl">Pending</div></div><div class="spstat"><div class="spstv" style="color:var(--gold)">0</div><div class="spstl">Overdue</div></div></div></div></div>
+  <div id="suppliers" class="page-wrap page"><div class="spage"><div class="sp-ico">🚛</div><h2>Supplier Management</h2><p>Manage supplier relationships, track purchase orders and delivery schedules for your furniture, electronics and household stock.</p><div class="sp-stats"><div class="spstat"><div class="spstv" style="color:var(--text-brand)">0</div><div class="spstl">Suppliers</div></div><div class="spstat"><div class="spstv" style="color:var(--warn-text)">0</div><div class="spstl">Pending</div></div><div class="spstat"><div class="spstv" style="color:var(--text-gold)">0</div><div class="spstl">Overdue</div></div></div></div></div>
   <!-- EXPENSES -->
   <div id="expenses" class="page-wrap page">
     <div class="dash-top" style="margin-bottom:16px">
@@ -335,15 +335,15 @@
     <!-- Cashier KPIs -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px" id="ch-kpis">
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--green),var(--leaf))"></div>
-        <div class="kpi-ico" style="background:var(--pale)"><svg viewBox="0 0 24 24" fill="var(--green)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--pale)"><svg viewBox="0 0 24 24" fill="var(--text-brand)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
         <div class="kpi-v" id="ch-revenue">KES 0</div><div class="kpi-l">My Revenue</div><div class="kpi-d up" id="ch-rev-sub"></div>
       </div>
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--gold),var(--gold-l))"></div>
-        <div class="kpi-ico" style="background:var(--gold-p)"><svg viewBox="0 0 24 24" fill="var(--gold)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--gold-p)"><svg viewBox="0 0 24 24" fill="var(--text-gold)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
         <div class="kpi-v" id="ch-sales">0</div><div class="kpi-l">Sales Made</div><div class="kpi-d up" id="ch-sales-sub"></div>
       </div>
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--info),#4f8df7)"></div>
-        <div class="kpi-ico" style="background:#e8f0fe"><svg viewBox="0 0 24 24" fill="var(--info)"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--info-bg)"><svg viewBox="0 0 24 24" fill="var(--info-text)"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
         <div class="kpi-v" id="ch-items">0</div><div class="kpi-l">Items Sold</div><div class="kpi-d up" id="ch-items-sub"></div>
       </div>
     </div>
@@ -420,19 +420,19 @@
     <!-- TOT Summary Cards -->
     <div class="kpi-grid" id="tot-kpi-grid" style="margin-bottom:16px">
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--green),var(--leaf))"></div>
-        <div class="kpi-ico" style="background:var(--pale)"><svg viewBox="0 0 24 24" fill="var(--green)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--pale)"><svg viewBox="0 0 24 24" fill="var(--text-brand)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
         <div class="kpi-v" id="tot-gross-sales">KES 312,400</div><div class="kpi-l">Total Gross Sales</div><div class="kpi-d up">Month to date</div>
       </div>
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--danger),#e74c3c)"></div>
-        <div class="kpi-ico" style="background:#fdecea"><svg viewBox="0 0 24 24" fill="var(--danger)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--bad-bg)"><svg viewBox="0 0 24 24" fill="var(--danger-text)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
         <div class="kpi-v" id="tot-tax-amount">KES 4,686.00</div><div class="kpi-l">Turnover Tax (1.5%)</div><div class="kpi-d dn">Payable to KRA</div>
       </div>
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--info),#4f8df7)"></div>
-        <div class="kpi-ico" style="background:#e8f0fe"><svg viewBox="0 0 24 24" fill="var(--info)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--info-bg)"><svg viewBox="0 0 24 24" fill="var(--info-text)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
         <div class="kpi-v" id="tot-net-revenue">KES 307,714.00</div><div class="kpi-l">Net Revenue After Tax</div><div class="kpi-d up">After TOT deduction</div>
       </div>
       <div class="kpi"><div class="kpi-ac" style="background:linear-gradient(90deg,var(--gold),var(--gold-l))"></div>
-        <div class="kpi-ico" style="background:var(--gold-p)"><svg viewBox="0 0 24 24" fill="var(--gold)"><path d="M19 3H5c-1.1 0-2 .9-2 2v3H3v2h2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg></div>
+        <div class="kpi-ico" style="background:var(--gold-p)"><svg viewBox="0 0 24 24" fill="var(--text-gold)"><path d="M19 3H5c-1.1 0-2 .9-2 2v3H3v2h2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg></div>
         <div class="kpi-v" id="tot-tx-count">5</div><div class="kpi-l">Transactions</div><div class="kpi-d up">Completed sales</div>
       </div>
     </div>
@@ -476,7 +476,7 @@
         <div class="srow"><div><div class="slbl">Auto-print receipts</div><div class="sdesc">Print after every sale</div></div><div class="toggle on" id="autoprint-toggle" onclick="toggleAutoPrint(this)"></div></div>
         <div class="srow"><div><div class="slbl">Sound on sale</div><div class="sdesc">Audio feedback</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
         <div class="srow"><div><div class="slbl">Turnover Tax (TOT 1.5%)</div><div class="sdesc">KRA Turnover Tax — Monthly 1.5%</div></div><div class="toggle on" id="tot-toggle" onclick="toggleTOT(this)"></div></div>
-        <div class="srow"><div><div class="slbl">TOT Rate (%)</div><div class="sdesc">Current: 1.5% (KRA default)</div></div><input id="tot-rate-input" type="number" step="0.01" min="0" max="100" value="1.5" style="width:70px;padding:6px 10px;border:1.5px solid var(--g100);border-radius:var(--r-sm);font-size:13px;font-weight:700;color:var(--green);background:var(--g50)" onchange="updateTOTRate(this.value)"></div>
+        <div class="srow"><div><div class="slbl">TOT Rate (%)</div><div class="sdesc">Current: 1.5% (KRA default)</div></div><input id="tot-rate-input" type="number" step="0.01" min="0" max="100" value="1.5" style="width:70px;padding:6px 10px;border:1.5px solid var(--g100);border-radius:var(--r-sm);font-size:13px;font-weight:700;color:var(--text-brand);background:var(--g50)" onchange="updateTOTRate(this.value)"></div>
         <div class="srow"><div><div class="slbl">Low stock alerts</div><div class="sdesc">Alert at 5 units</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
         <div class="srow"><div><div class="slbl">Offline mode</div><div class="sdesc">Work without internet</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
       </div></div>
@@ -669,7 +669,7 @@
       </div>
 
       <!-- Download TXT fallback -->
-      <button onclick="downloadReceiptTxt()" style="width:100%;padding:14px;border-radius:12px;background:var(--pale);color:var(--green);border:1.5px solid var(--mint);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+      <button onclick="downloadReceiptTxt()" style="width:100%;padding:14px;border-radius:12px;background:var(--pale);color:var(--text-brand);border:1.5px solid var(--mint);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
         <span>📥</span> Download as .txt (use with PrintHand)
       </button>
 
@@ -727,9 +727,9 @@
 </div>
 
 
-<script src="js/receipt.js?v=a938410af8"></script>
-<script src="js/receipt-config.js?v=a938410af8"></script>
-<script src="js/app.js?v=a938410af8"></script>
+<script src="js/receipt.js?v=a6ce12b7cd"></script>
+<script src="js/receipt-config.js?v=a6ce12b7cd"></script>
+<script src="js/app.js?v=a6ce12b7cd"></script>
 
 <!-- ═══════════════════════════════════════════════════════════
      EDEN PWA — Install Banner, Service Worker, Manifest
@@ -827,6 +827,6 @@
   🔄 Update available — tap to refresh
 </div>
 
-<script src="js/pwa.js?v=a938410af8"></script>
+<script src="js/pwa.js?v=a6ce12b7cd"></script>
 </body>
 </html>
