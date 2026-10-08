@@ -876,6 +876,8 @@ let CUR_SALE=null; // the sale on screen / being reprinted (set when a sale is r
 const THERMAL = {
   device: null,
   characteristic: null,
+  candidates: [],   // every writable Bluetooth channel found on the printer
+  idx: 0,           // which one is in use
   connected: false
 };
 
@@ -1025,6 +1027,7 @@ function closePrintPanel(){
 
 // ── BT STATUS UI ──────────────────────────────────────────
 function updateBtUI(){
+  setTimeout(updateBtDiag,0);
   const dot=document.getElementById('bt-dot');
   const txt=document.getElementById('bt-status-text');
   const sub=document.getElementById('bt-status-sub');
@@ -1112,6 +1115,80 @@ window.onPrinterSelected = function(name){
 };
 
 // ── BLUETOOTH CONNECT ─────────────────────────────────────
+// ── BLUETOOTH PRINTER CHANNELS ───────────────────────────
+// Cheap BLE printers expose several services/characteristics and only ONE of them feeds the print head.
+// "Sent" only means the write was accepted, so we list every writable channel, try the likeliest first,
+// and let the user move to the next one (Test print / Try next channel) until paper comes out.
+const BLE_PRINTER_SERVICES=[
+  '000018f0-0000-1000-8000-00805f9b34fb',
+  '0000ff00-0000-1000-8000-00805f9b34fb',
+  '0000ffe0-0000-1000-8000-00805f9b34fb',
+  '49535343-fe7d-4ae5-8fa9-9fafd205e455',
+  'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+  '0000ae30-0000-1000-8000-00805f9b34fb',
+  '0000fee7-0000-1000-8000-00805f9b34fb',
+  '0000af30-0000-1000-8000-00805f9b34fb',
+  '00001101-0000-1000-8000-00805f9b34fb'
+];
+const BLE_KEY='eden-printer-channel';
+function shortUUID(u){return String(u).replace(/^0000([0-9a-f]{4})-0000-1000-8000-00805f9b34fb$/,'$1').slice(0,8);}
+async function findPrinterChannels(server){
+  let svcs=[];
+  try{svcs=await server.getPrimaryServices();}catch(e){}
+  const out=[];
+  for(const svc of svcs){
+    let chars=[];try{chars=await svc.getCharacteristics();}catch(e){continue;}
+    for(const c of chars){
+      const p=c.properties||{};
+      if(p.writeWithoutResponse)out.push({svc:svc.uuid,char:c,mode:'nr'});
+      if(p.write)out.push({svc:svc.uuid,char:c,mode:'rsp'});
+    }
+  }
+  const rank=u=>{const i=BLE_PRINTER_SERVICES.indexOf(u);return i<0?99:i;};
+  out.sort((a,b)=>rank(a.svc)-rank(b.svc));
+  out.forEach(c=>{
+    c.label=shortUUID(c.svc)+' / '+shortUUID(c.char.uuid)+(c.mode==='nr'?' (fast)':' (acked)');
+    c.key=c.svc+'/'+c.char.uuid+'/'+c.mode;
+  });
+  return out;
+}
+async function sendBytes(bytes){
+  const ch=THERMAL.candidates[THERMAL.idx];
+  if(!ch)throw new Error('No printer channel');
+  const CHUNK=NotifyReceipt.config.bleChunk,GAP=ch.mode==='rsp'?10:25;
+  for(let i=0;i<bytes.length;i+=CHUNK){
+    await writeChunk(ch.char,bytes.slice(i,i+CHUNK),ch.mode);
+    await delay(GAP);
+  }
+}
+function updateBtDiag(){
+  const box=document.getElementById('bt-diag');if(!box)return;
+  const on=THERMAL.connected&&!hasAndroidBridge()&&THERMAL.candidates&&THERMAL.candidates.length>0;
+  box.style.display=on?'block':'none';if(!on)return;
+  const c=THERMAL.candidates[THERMAL.idx];
+  document.getElementById('bt-diag-info').textContent='Channel '+(THERMAL.idx+1)+' of '+THERMAL.candidates.length+': '+c.label;
+  document.getElementById('bt-diag-next').disabled=THERMAL.candidates.length<2;
+}
+async function btTest(){
+  const c=THERMAL.candidates[THERMAL.idx];if(!c)return;
+  const txt='\n   EDEN PRINTER TEST\nChannel '+(THERMAL.idx+1)+' of '+THERMAL.candidates.length+'\n'+c.label+'\n--------------------------------\n\n\n\n';
+  const head=new Uint8Array([0x1b,0x40]),body=new TextEncoder().encode(txt);
+  const bytes=new Uint8Array(head.length+body.length);bytes.set(head,0);bytes.set(body,head.length);
+  try{await sendBytes(bytes);showToast('Test sent — did paper come out?','success',3500);}
+  catch(e){showToast('Test failed: '+e.message,'error');}
+}
+function btNext(){
+  if(!THERMAL.candidates.length)return;
+  THERMAL.idx=(THERMAL.idx+1)%THERMAL.candidates.length;
+  THERMAL.characteristic=THERMAL.candidates[THERMAL.idx].char;
+  updateBtDiag();btTest();
+}
+function btKeep(){
+  const c=THERMAL.candidates[THERMAL.idx];if(!c||!THERMAL.device)return;
+  try{localStorage.setItem(BLE_KEY,JSON.stringify({dev:THERMAL.device.name,key:c.key}));}catch(_){}
+  showToast('Saved — Eden will use this channel for '+(THERMAL.device.name||'this printer'),'success',3500);
+}
+
 async function connectP58E(){
   if(!navigator.bluetooth){
     showToast('Web Bluetooth not supported on this browser. Use the .txt download option.','error');
@@ -1121,52 +1198,21 @@ async function connectP58E(){
   const btn=document.getElementById('bt-main-btn');
   try{
     lbl.textContent='Scanning…';btn.disabled=true;
-    // SPP-compatible UUIDs that work with most 58mm printers
-    const SPP='00001101-0000-1000-8000-00805f9b34fb';
-    const device=await navigator.bluetooth.requestDevice({
-      acceptAllDevices:true,
-      optionalServices:[
-        SPP,
-        '000018f0-0000-1000-8000-00805f9b34fb', // common generic printer
-        '0000ff00-0000-1000-8000-00805f9b34fb',
-        '0000ffe0-0000-1000-8000-00805f9b34fb',
-      ]
-    });
+    const device=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:BLE_PRINTER_SERVICES});
     lbl.textContent='Connecting…';
     const server=await device.gatt.connect();
-    // Try known BLE printer service UUIDs in order
-    const serviceUUIDs=[
-      '000018f0-0000-1000-8000-00805f9b34fb',
-      '0000ff00-0000-1000-8000-00805f9b34fb',
-      '0000ffe0-0000-1000-8000-00805f9b34fb',
-      SPP
-    ];
-    let service=null, characteristic=null;
-    for(const uuid of serviceUUIDs){
-      try{
-        service=await server.getPrimaryService(uuid);
-        if(service)break;
-      }catch(e){}
-    }
-    if(!service){
-      // Last resort — get any available service
-      const svcs=await server.getPrimaryServices();
-      if(svcs.length)service=svcs[0];
-    }
-    if(!service)throw new Error('No printable service found on this device');
-    const chars=await service.getCharacteristics();
-    // Pick writable characteristic
-    for(const c of chars){
-      if(c.properties.write||c.properties.writeWithoutResponse){
-        characteristic=c;break;
-      }
-    }
-    if(!characteristic)throw new Error('No writable characteristic found');
+    const found=await findPrinterChannels(server);
+    if(!found.length)throw new Error('No writable characteristic found');
+    try{ // use the channel that worked last time for this printer
+      const sv=JSON.parse(localStorage.getItem(BLE_KEY)||'null');
+      if(sv&&sv.dev===device.name){const i=found.findIndex(c=>c.key===sv.key);if(i>0)found.unshift(found.splice(i,1)[0]);}
+    }catch(_){}
     THERMAL.device=device;
-    THERMAL.characteristic=characteristic;
+    THERMAL.candidates=found;THERMAL.idx=0;
+    THERMAL.characteristic=found[0].char;
     THERMAL.connected=true;
     device.addEventListener('gattserverdisconnected',()=>{
-      THERMAL.connected=false;THERMAL.characteristic=null;THERMAL.device=null;
+      THERMAL.connected=false;THERMAL.characteristic=null;THERMAL.device=null;THERMAL.candidates=[];
       showToast('Printer disconnected','error');
       updateBtUI();
     });
@@ -1212,11 +1258,7 @@ async function sendThermalPrint(auto){
   const sale=getCurrentSaleData();
   try{
     const bytes=NotifyReceipt.buildEscPos(edenToSale(sale)); // init, text, bold total, feed + cut
-    const CHUNK=NotifyReceipt.config.bleChunk;
-    for(let i=0;i<bytes.length;i+=CHUNK){
-      await writeChunk(THERMAL.characteristic,bytes.slice(i,i+CHUNK));
-      await delay(25);
-    }
+    await sendBytes(bytes);
     showToast('Receipt sent to printer ✓','success');
     if(!auto)setTimeout(()=>closePrintPanel(),1200);
   }catch(err){
@@ -1226,10 +1268,13 @@ async function sendThermalPrint(auto){
   }
 }
 
-async function writeChunk(char,data){
-  if(char.properties.writeWithoutResponse){
+async function writeChunk(char,data,mode){
+  if(mode==='rsp'){
+    if(char.writeValueWithResponse)await char.writeValueWithResponse(data);
+    else await char.writeValue(data);
+  }else if(mode==='nr'||char.properties.writeWithoutResponse){
     await char.writeValueWithoutResponse(data);
-  } else {
+  }else{
     await char.writeValue(data);
   }
 }
