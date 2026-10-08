@@ -27,7 +27,7 @@
 <script>window.jspdf||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>')</script>
 <script src="vendor/html2canvas.min.js"></script>
 <script>window.html2canvas||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>')</script>
-<link rel="stylesheet" href="css/app.css?v=7e2293d9e7">
+<link rel="stylesheet" href="css/app.css?v=a938410af8">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
   <div class="login-art">
     <div class="art-bg"></div>
     <div class="login-brand-mark">
-    <img src="icons/logo.jpg?v=7e2293d9e7" alt="Eden Electronics Chuka — We care for your home" style="height:150px;width:150px;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.35);display:block">
+    <img src="icons/logo.jpg?v=a938410af8" alt="Eden Electronics Chuka — We care for your home" style="height:150px;width:150px;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,.35);display:block">
   </div>
     <div class="login-h">Smart POS for the <em>modern</em> home.</div>
     <div class="login-sub">Manage stock, process sales, track staff performance and grow your furniture, electronics and household goods business — all in one modern platform.</div>
@@ -657,6 +657,17 @@
         <span>📡</span><span id="bt-main-label">Connect Printer</span>
       </button>
 
+      <!-- Channel check: shown while a Bluetooth printer is connected -->
+      <div id="bt-diag" style="display:none;padding:12px 14px;border-radius:12px;background:var(--g50);border:1.5px solid var(--g100)">
+        <div style="font-size:12px;font-weight:800;color:var(--ink)">Receipt sent but nothing prints?</div>
+        <div id="bt-diag-info" style="font-size:11px;color:var(--g400);margin:3px 0 10px"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-s" onclick="btTest()">🧪 Test print</button>
+          <button class="btn btn-s" id="bt-diag-next" onclick="btNext()">↻ Try next channel</button>
+          <button class="btn btn-p" onclick="btKeep()">✓ It printed</button>
+        </div>
+      </div>
+
       <!-- Download TXT fallback -->
       <button onclick="downloadReceiptTxt()" style="width:100%;padding:14px;border-radius:12px;background:var(--pale);color:var(--green);border:1.5px solid var(--mint);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
         <span>📥</span> Download as .txt (use with PrintHand)
@@ -716,9 +727,9 @@
 </div>
 
 
-<script src="js/receipt.js?v=7e2293d9e7"></script>
-<script src="js/receipt-config.js?v=7e2293d9e7"></script>
-<script src="js/app.js?v=7e2293d9e7"></script>
+<script src="js/receipt.js?v=a938410af8"></script>
+<script src="js/receipt-config.js?v=a938410af8"></script>
+<script src="js/app.js?v=a938410af8"></script>
 
 <!-- ═══════════════════════════════════════════════════════════
      EDEN PWA — Install Banner, Service Worker, Manifest
@@ -816,6 +827,6 @@
   🔄 Update available — tap to refresh
 </div>
 
-<script src="js/pwa.js?v=7e2293d9e7"></script>
+<script src="js/pwa.js?v=a938410af8"></script>
 </body>
 </html>
