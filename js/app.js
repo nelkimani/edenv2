@@ -202,7 +202,7 @@ function renderProds(){
     return `<div class="pcard${p.q===0?' oos':''}" onclick="addToCart(${p.id})">
       <div class="afl" id="f-${p.id}"></div>
       <div class="pce">${p.e}</div><div class="pcn">${p.n}</div><div class="pcs">${p.s}</div>
-      <div class="pcb"><div class="pcp">KES ${p.r}</div><div class="pcst ${sc}">${sl}</div></div>
+      <div class="pcb"><div class="pcp">KES ${p.r.toLocaleString()}</div><div class="pcst ${sc}">${sl}</div></div>
     </div>`;
   }).join('')||'<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--g200);font-size:13px">'+(PRODS.length?'No products found':'No stock loaded yet')+'</div>';
 }
@@ -279,7 +279,7 @@ function cartItemsHTML(){
   if(!cart.length)return`<div class="cart-empty"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg><p>Cart is empty</p><small>Tap a product to add</small></div>`;
   return cart.map(i=>`<div class="ci">
     <div class="ci-e">${i.e}</div>
-    <div class="ci-inf"><div class="ci-n">${i.n}</div><div class="ci-p">KES ${i.r} each</div></div>
+    <div class="ci-inf"><div class="ci-n">${i.n}</div><div class="ci-p">KES ${i.r.toLocaleString()} each</div></div>
     <div class="ci-q"><div class="qb" onclick="chQty(${i.id},-1)">−</div><div class="qn">${i.qty}</div><div class="qb" onclick="chQty(${i.id},1)">+</div></div>
     <div class="ci-t">KES ${(i.r*i.qty).toLocaleString()}</div>
     <div class="ci-rm" onclick="rmCart(${i.id})">×</div>
@@ -323,7 +323,7 @@ function peTotal(){return cart.reduce((s,i)=>s+i.r*i.qty,0);}
 function renderPayExtra(){
   let h='';
   if(payM==='cash')h='<input class="pe-in pe-cash" inputmode="decimal" placeholder="Cash received (optional)" value="'+payExtra.cash+'" oninput="peCash(this.value)"><div class="pe-chg pe-chg-t"></div>';
-  else if(payM==='mpesa')h='<input class="pe-in pe-ref" maxlength="10" autocapitalize="characters" autocomplete="off" placeholder="M-Pesa code, e.g. SJK4L2M9QP (optional)" value="'+payExtra.ref+'" oninput="peRef(this.value)">';
+  else if(payM==='mpesa')h='<input class="pe-in pe-ref" maxlength="10" autocapitalize="characters" autocomplete="off" placeholder="M-Pesa code (optional)" value="'+payExtra.ref+'" oninput="peRef(this.value)">';
   ['pay-extra','d-pay-extra'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=h;});
   updatePeChange();
 }
@@ -401,15 +401,15 @@ function renderLive(){
   if(el('dash-kpi-revenue'))el('dash-kpi-revenue').textContent='KES '+MAC_FMT(R.todayTotal);
   if(el('dash-kpi-cust'))el('dash-kpi-cust').textContent=R.todayCount;
   const rec=el('dash-recent');
-  if(rec)rec.innerHTML=R.today.length?R.today.slice(0,6).map(x=>{const k=macPayKey(x.pay);return `<tr><td style="font-weight:600;font-size:11px;font-family:monospace">${x.num}</td><td>${x.cashier||'Staff'}</td><td><span class="badge bb">${x.items}</span></td><td style="font-weight:700;color:var(--green)">KES ${MAC_FMT(x.tot)}</td><td><span class="badge ${MAC_PAYBDG[k]}">${MAC_PAYLBL[k]}</span></td><td style="color:var(--g400);font-size:11px">${x.time}</td></tr>`;}).join(''):empty(6,'No sales yet today');
+  if(rec)rec.innerHTML=R.today.length?R.today.slice(0,6).map(x=>{const k=macPayKey(x.pay);return `<tr><td style="font-weight:600;font-size:11px;font-family:monospace">${x.num}</td><td>${x.cashier||'Staff'}</td><td><span class="badge bb">${x.items}</span></td><td style="font-weight:700;color:var(--text-brand)">KES ${MAC_FMT(x.tot)}</td><td><span class="badge ${MAC_PAYBDG[k]}">${MAC_PAYLBL[k]}</span></td><td style="color:var(--g400);font-size:11px">${x.time}</td></tr>`;}).join(''):empty(6,'No sales yet today');
   const top=el('dash-top');
-  if(top){const mx=R.top.length?R.top[0][1]:1;top.innerHTML=R.top.length?R.top.map(([n,v],i)=>{const p=PRODS.find(q=>q.n===n);const st=i===0?'background:var(--gold-p);color:var(--gold)':i===1?'background:var(--pale);color:var(--green)':'background:var(--g50);color:var(--g400)';
+  if(top){const mx=R.top.length?R.top[0][1]:1;top.innerHTML=R.top.length?R.top.map(([n,v],i)=>{const p=PRODS.find(q=>q.n===n);const st=i===0?'background:var(--gold-p);color:var(--text-gold)':i===1?'background:var(--pale);color:var(--text-brand)':'background:var(--g50);color:var(--g400)';
     return `<div class="tpi"><div class="tpr" style="${st}">${i+1}</div><div class="tpn"><div class="tpnm">${n}</div><div class="tpnc">${p?p.c:''}</div></div><div class="tpbw"><div class="tpb" style="width:${Math.round(v/mx*100)}%"></div></div><div class="tpa">KES ${v>=1000?(v/1000).toFixed(1)+'K':v}</div></div>`;}).join(''):'<div style="color:var(--g400);font-size:12px;padding:6px 0">Top sellers appear after the first sale</div>';}
   const al=el('dash-alerts'), low=PRODS.filter(p=>p.q<=LOW_STOCK).sort((a,b)=>a.q-b.q);
   if(al)al.innerHTML=!PRODS.length?'<div style="color:var(--g400);font-size:12px;padding:6px 0">No stock loaded yet</div>':low.length?low.slice(0,5).map(p=>`<div class="ar"><div class="a-dot" style="background:var(--${p.q===0?'danger':'warn'})"></div><div><div class="a-t">${p.n}</div><div class="a-s">${p.q} unit${p.q===1?'':'s'} — ${p.q===0?'Out of stock':'Low stock'}</div></div></div>`).join(''):'<div style="color:var(--g400);font-size:12px;padding:6px 0">All items are well stocked ✓</div>';
   const nb=el('nb-inv');if(nb){nb.textContent=low.length;nb.style.display=low.length?'':'none';}
   const cs=el('dash-cashiers');
-  if(cs){const mx=R.cashiers.length?R.cashiers[0][1]:1;cs.innerHTML=R.cashiers.length?R.cashiers.map(([n,v],i)=>{const ini=n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();const st=i===0?'background:var(--pale);color:var(--green)':'background:var(--gold-p);color:var(--gold)';
+  if(cs){const mx=R.cashiers.length?R.cashiers[0][1]:1;cs.innerHTML=R.cashiers.length?R.cashiers.map(([n,v],i)=>{const ini=n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();const st=i===0?'background:var(--pale);color:var(--text-brand)':'background:var(--gold-p);color:var(--text-gold)';
     return `<div class="cr"><div class="cav" style="${st}">${ini}</div><div class="cn">${n}</div><div class="cbw"><div class="cb" style="width:${Math.round(v/mx*100)}%"></div></div><div class="ca">KES ${MAC_FMT(v)}</div></div>`;}).join(''):'<div style="color:var(--g400);font-size:12px;padding:6px 0">Cashier totals appear after the first sale</div>';}
   const log=el('rep-log');
   if(log)log.innerHTML=R.all.length?R.all.slice(0,100).map(x=>{const k=macPayKey(x.pay);return `<tr><td style="font-family:monospace;font-size:11px">${x.num}</td><td>${x.cashier||'Staff'}</td><td>${x.items}</td><td><span class="badge ${MAC_PAYBDG[k]}">${MAC_PAYLBL[k]}</span></td><td style="font-weight:700">KES ${MAC_FMT(x.tot)}</td><td style="font-size:11px;color:var(--g400)">${x.time}</td></tr>`;}).join(''):empty(6,'No transactions yet');
@@ -542,13 +542,13 @@ function renderCashierHistory(){
       <th style="text-align:left;font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.8px;padding:10px 14px;border-bottom:1.5px solid var(--g100)">Action</th>
     </tr></thead>
     <tbody>${mineS.map((s,i)=>`<tr style="${i%2===1?'background:var(--g50)':''}">
-      <td style="padding:11px 14px;border-bottom:1px solid var(--g50);font-weight:700;font-size:11px;font-family:monospace;color:var(--green)">${s.num}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid var(--g50);font-weight:700;font-size:11px;font-family:monospace;color:var(--text-brand)">${s.num}</td>
       <td style="padding:11px 14px;border-bottom:1px solid var(--g50);font-size:12px;color:var(--g400)">${s.time}</td>
       <td style="padding:11px 14px;border-bottom:1px solid var(--g50)"><span class="badge bb">${s.items} item${s.items!==1?'s':''}</span></td>
       <td style="padding:11px 14px;border-bottom:1px solid var(--g50);font-size:12px">${s.pay}</td>
-      <td style="padding:11px 14px;border-bottom:1px solid var(--g50);font-weight:800;color:var(--green)">KES ${s.tot.toLocaleString()}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid var(--g50);font-weight:800;color:var(--text-brand)">KES ${s.tot.toLocaleString()}</td>
       <td style="padding:11px 14px;border-bottom:1px solid var(--g50)">
-        <button onclick="reprintSale(${mineRows[i].i})" style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;background:var(--pale);color:var(--green);border:1px solid var(--mint);cursor:pointer;min-height:32px">🖨 Reprint</button>
+        <button onclick="reprintSale(${mineRows[i].i})" style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;background:var(--pale);color:var(--text-brand);border:1px solid var(--mint);cursor:pointer;min-height:32px">🖨 Reprint</button>
       </td>
     </tr>`).join('')}</tbody>
   </table>`;
@@ -625,16 +625,16 @@ function renderInv(){
   if(tb){
     tb.innerHTML=list.map(p=>{
       const st=invStatus(p), sc=st==='out'?'br':st==='low'?'bw':'bg', sl=st==='out'?'Out of stock':st==='low'?'Low stock':'In stock';
-      const snc=st==='out'?'color:var(--danger)':st==='low'?'color:var(--warn)':'';
+      const snc=st==='out'?'color:var(--danger-text)':st==='low'?'color:var(--warn-text)':'';
       const act=canEdit?`<div style="display:flex;gap:5px"><div class="ab add" title="Receive stock" onclick="openStockModal(${p.id})">${IC_PLUS}</div><div class="ab edit" title="Edit" onclick="openProdModal(${p.id})">${IC_EDIT}</div><div class="ab del" title="Delete" onclick="delProd(${p.id})">${IC_DEL}</div></div>`:'';
-      return`<tr><td><div style="display:flex;align-items:center;gap:10px"><div class="pt">${p.e}</div><div class="tn">${p.n}</div></div></td><td style="font-family:monospace;font-size:10px;color:var(--g400)">${p.s}</td><td><span class="badge bb">${p.c}</span></td><td style="font-weight:700;color:var(--green)">KES ${p.r.toLocaleString()}</td><td style="color:var(--g600)">KES ${p.w.toLocaleString()}</td><td><span style="font-weight:700;${snc}">${p.q}</span></td><td><span class="badge ${sc}">${sl}</span></td><td>${act}</td></tr>`;
+      return`<tr><td><div style="display:flex;align-items:center;gap:10px"><div class="pt">${p.e}</div><div class="tn">${p.n}</div></div></td><td style="font-family:monospace;font-size:10px;color:var(--g400)">${p.s}</td><td><span class="badge bb">${p.c}</span></td><td style="font-weight:700;color:var(--text-brand)">KES ${p.r.toLocaleString()}</td><td style="color:var(--g600)">KES ${p.w.toLocaleString()}</td><td><span style="font-weight:700;${snc}">${p.q}</span></td><td><span class="badge ${sc}">${sl}</span></td><td>${act}</td></tr>`;
     }).join('')||`<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:28px;font-size:13px">${emptyMsg}</td></tr>`;
   }
   if(cards){
     cards.innerHTML=list.map(p=>{
       const st=invStatus(p), sc=st==='out'?'br':st==='low'?'bw':'bg', sl=st==='out'?'Out of stock':st==='low'?'Low stock':'In stock';
       const act=canEdit?`<div class="icact"><div class="icbtn ice-btn" onclick="openStockModal(${p.id})">${IC_PLUS.replace('<svg ','<svg style="width:14px;height:14px" ')}Stock</div><div class="icbtn ice-btn" onclick="openProdModal(${p.id})">${IC_EDIT.replace('<svg ','<svg style="width:14px;height:14px" ')}Edit</div><div class="icbtn icd-btn" onclick="delProd(${p.id})">${IC_DEL.replace('<svg ','<svg style="width:14px;height:14px" ')}Delete</div></div>`:'';
-      return`<div class="icard"><div class="ict"><div class="ice">${p.e}</div><div class="icinfo"><div class="icn">${p.n}</div><div class="ics">${p.s}</div></div><span class="badge ${sc}">${sl}</span></div><div class="icm"><div><div class="icml">Retail</div><div class="icmv" style="color:var(--green)">KES ${p.r.toLocaleString()}</div></div><div><div class="icml">Cost</div><div class="icmv" style="color:var(--g600)">KES ${p.w.toLocaleString()}</div></div><div><div class="icml">Stock</div><div class="icmv" style="color:${st==='out'?'var(--danger)':st==='low'?'var(--warn)':'var(--ink)'}">${p.q}</div></div></div>${act}</div>`;
+      return`<div class="icard"><div class="ict"><div class="ice">${p.e}</div><div class="icinfo"><div class="icn">${p.n}</div><div class="ics">${p.s}</div></div><span class="badge ${sc}">${sl}</span></div><div class="icm"><div><div class="icml">Retail</div><div class="icmv" style="color:var(--text-brand)">KES ${p.r.toLocaleString()}</div></div><div><div class="icml">Cost</div><div class="icmv" style="color:var(--g600)">KES ${p.w.toLocaleString()}</div></div><div><div class="icml">Stock</div><div class="icmv" style="color:${st==='out'?'var(--danger)':st==='low'?'var(--warn)':'var(--ink)'}">${p.q}</div></div></div>${act}</div>`;
     }).join('')||`<div style="text-align:center;color:var(--g400);padding:28px;font-size:13px">${emptyMsg}</div>`;
   }
 }
@@ -1753,9 +1753,9 @@ function renderTOTReport(){
       const wNet = calcNetRevenue(w.gross);
       return `<tr style="${i%2===1?'background:var(--g50)':''}">
         <td style="font-weight:600">${w.week}</td>
-        <td style="font-weight:700;color:var(--green)">${fmt(w.gross)}</td>
-        <td style="font-weight:700;color:var(--danger)">${fmt(wTOT)}</td>
-        <td style="font-weight:700;color:var(--info)">${fmt(wNet)}</td>
+        <td style="font-weight:700;color:var(--text-brand)">${fmt(w.gross)}</td>
+        <td style="font-weight:700;color:var(--danger-text)">${fmt(wTOT)}</td>
+        <td style="font-weight:700;color:var(--info-text)">${fmt(wNet)}</td>
         <td><span class="badge bb">${w.tx}</span></td>
       </tr>`;
     }).join('');
@@ -1809,7 +1809,7 @@ function updateDashTOT(){
   const weeks = getTOTMonthlyData(now.getMonth(), now.getFullYear());
   const totalGross = weeks.reduce((s,w)=>s+w.gross, 0);
   const totalTOT   = calcTOT(totalGross);
-  const fmt = n => 'KES '+n.toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmt = n => 'KES '+n.toLocaleString('en-KE',{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2});
   const el  = id => document.getElementById(id);
   if(el('dash-kpi-tot'))     el('dash-kpi-tot').textContent     = fmt(totalTOT);
   if(el('dash-kpi-monthly')) el('dash-kpi-monthly').textContent = fmt(totalGross);
@@ -2537,7 +2537,7 @@ function renderStaff(){
   box.innerHTML=MAC_USERS.map((u,i)=>{
     const me=currentUser&&u.id===currentUser.id, manage=!me&&canManage(u);
     const ini=u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const st=u.role==='cashier'?'background:var(--gold-p);color:var(--gold)':'background:var(--pale);color:var(--green)';
+    const st=u.role==='cashier'?'background:var(--gold-p);color:var(--text-gold)':'background:var(--pale);color:var(--text-brand)';
     const btns=manage?`<div style="display:flex;gap:6px;flex-shrink:0"><button class="btn btn-s" style="padding:6px 10px;font-size:11px;min-height:32px" onclick="openPwModal('${u.id}')">Reset</button><button class="btn btn-d" style="padding:6px 10px;font-size:11px;min-height:32px" onclick="delStaff('${u.id}')">Delete</button></div>`:'';
     return `<div class="cr"${i?' style="margin-top:8px"':''}><div class="cav" style="${st}">${ini}</div><div class="cn">${u.name} <span class="badge ${bd[u.role]}" style="font-size:9px">${MAC_ROLE_LBL[u.role]}</span>${me?' <span class="badge bw" style="font-size:9px">You</span>':''}<div style="font-size:11px;color:var(--g400);font-weight:400">@${u.username}</div></div>${btns}</div>`;
   }).join('')||'<div style="color:var(--g400);font-size:12px">No accounts yet</div>';
