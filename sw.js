@@ -3,7 +3,7 @@
    All shop data (sales, stock, expenses) lives in the device's own storage, so a till keeps working offline.
    To ship an update: run `python3 tools/stamp.py` before uploading. It sets VERSION below from a hash of every app file
    and stamps the same hash on the ?v= links in index.html, so every device picks the update up. Never edit VERSION by hand. */
-const VERSION = 'eden-7e2293d9e7';
+const VERSION = 'eden-a938410af8';
 const V = VERSION.replace(/^eden-/, '');
 // Files index.html loads with ?v=<hash>: cached under that exact URL, so a page can never mix old and new files
 const VERSIONED = ['css/app.css', 'js/receipt.js', 'js/receipt-config.js', 'js/app.js', 'js/pwa.js', 'icons/logo.jpg'].map((p) => './' + p + '?v=' + V);
